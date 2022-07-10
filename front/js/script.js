@@ -13,25 +13,26 @@ async function getProducts(url) {
         }
     })
     .then ((products) => {
-        showProducts (products);
+        Products=products;
+        showProducts ();
     });
 }
 
-function showProducts(products) {
-    console.table(products);
+function showProducts() {
+    console.table(Products);
 
-    let url="http://google/"
 
-    for (let product of products){
+    for (let product of Products){
         if (!showProduct(product)) {
             //afficher message erreur
             exit;
         }
     }
+    
 }
 
 function showProduct(product,url) {
-
+    console.table(product);
 
     //contrôle
     if (product === null || product.length === 0) {
