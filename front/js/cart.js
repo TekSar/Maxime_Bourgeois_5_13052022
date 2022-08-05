@@ -1,10 +1,9 @@
-
-
+//fonction de récupération des produits depuis le localstorage
 function showProducts(productsBackend){
     let datas=JSON.parse(localStorage.getItem('products'));
     let productBackend;
 
-    // si datas vide  on masque le formulaire + message à l'utilisateur
+    // si datas vide on masque le formulaire + message à l'utilisateur
     if (datas == null || datas == []){
         var formulaire = document.querySelector(".cart__order");
         formulaire.style.display = "none";
@@ -13,15 +12,13 @@ function showProducts(productsBackend){
         for (let i=0; i<datas.length; i++){
             productBackend=getProductBackend(datas[i].productId,Products);
             showProduct(datas[i],productBackend);
-            //calculTotal(datas[i],productBackend);
         }
         calculTotal(datas,Products);
         verifInputQuantity();
         modifyQtt(datas);
-    }    
-    // return datas;
+    }
 }
-
+//fonction utile à la précédente, récupérant l'ID pour tout les produits
 function getProductBackend(productId,productsBackend){
     for (let i=0; i<productsBackend.length; i++){
         if(productsBackend[i]._id==productId){
@@ -30,9 +27,9 @@ function getProductBackend(productId,productsBackend){
     }
     return "TODO ERREUR A GERER";
 }
-
+//fonction d'affichage des articles dans le panier, similairement aux autres pages
 function showProduct(productLocalStorage, productBackend){
-    //html
+    //déclaration
     let article;
     let div_img;
     let div_content;
@@ -48,11 +45,11 @@ function showProduct(productLocalStorage, productBackend){
     let p_price;
     let input;
 
-    //valeurs
+    //declaration couleur et quantité depuis le localstorage
     let productColor=productLocalStorage.color;
     let productQuantity = productLocalStorage.quantity;
     
-
+    //mise en place de l'intégration des valeurs et création des balises
     article = document.createElement('article');
     document.querySelector("#cart__items" ).appendChild(article);
     article.setAttribute('class', 'cart__item' );
@@ -61,75 +58,74 @@ function showProduct(productLocalStorage, productBackend){
 
     //Image
 
-        div_img = document.createElement('div');
-        article.appendChild(div_img);
-        div_img.setAttribute('class', 'cart__item__img');
-
-        img = document.createElement('img');
-        div_img.appendChild(img);
-        img.setAttribute('src', productBackend.imageUrl);
-        img.setAttribute('alt', "Photographie d'un canapé");
+    div_img = document.createElement('div');
+    article.appendChild(div_img);
+    div_img.setAttribute('class', 'cart__item__img');
+    img = document.createElement('img');
+    div_img.appendChild(img);
+    img.setAttribute('src', productBackend.imageUrl);
+    img.setAttribute('alt', "Photographie d'un canapé");
 
     //content
 
-        div_content = document.createElement('div');
-        article.appendChild(div_content);
-        div_content.setAttribute('class', 'cart__item__content');
+    div_content = document.createElement('div');
+    article.appendChild(div_content);
+    div_content.setAttribute('class', 'cart__item__content');
 
-        div_description = document.createElement('div');
-        div_content.appendChild(div_description);
-        div_description.setAttribute('class', 'cart__item__content__description');
+    div_description = document.createElement('div');
+    div_content.appendChild(div_description);
+    div_description.setAttribute('class', 'cart__item__content__description');
 
-        h2 = document.createElement('h2');
-        div_description.appendChild(h2);
-        h2.innerHTML = productBackend.name;
+    h2 = document.createElement('h2');
+    div_description.appendChild(h2);
+    h2.innerHTML = productBackend.name;
 
-        p_color = document.createElement('p');
-        div_description.appendChild(p_color);
-        p_color.innerHTML = productColor;
+    p_color = document.createElement('p');
+    div_description.appendChild(p_color);
+    p_color.innerHTML = productColor;
 
-        p_price = document.createElement('p');
-        div_description.appendChild(p_price);
-        p_price.innerHTML = productBackend.price + ',00 €';
+    p_price = document.createElement('p');
+    div_description.appendChild(p_price);
+    p_price.innerHTML = productBackend.price + ',00 €';
 
     //settings
 
-        div_setting = document.createElement('div');
-        div_content.appendChild(div_setting);
-        div_setting.setAttribute('class', 'cart__item__content__settings');
+    div_setting = document.createElement('div');
+    div_content.appendChild(div_setting);
+    div_setting.setAttribute('class', 'cart__item__content__settings');
 
-        div_quantity = document.createElement('div');
-        div_setting.appendChild(div_quantity);
-        div_quantity.setAttribute('class', 'cart__item__content__settings__quantity');
+    div_quantity = document.createElement('div');
+    div_setting.appendChild(div_quantity);
+    div_quantity.setAttribute('class', 'cart__item__content__settings__quantity');
 
-        p_quantity = document.createElement('p');
-        div_quantity.appendChild(p_quantity);
-        p_quantity.innerHTML = "Qté : " + productQuantity;
+    p_quantity = document.createElement('p');
+    div_quantity.appendChild(p_quantity);
+    p_quantity.innerHTML = "Qté : " + productQuantity;
 
-        input = document.createElement('input');
-        div_quantity.appendChild(input);
-        input.setAttribute('type', 'number');
-        input.setAttribute('class', 'itemQuantity');
-        input.setAttribute('name', 'itemQuantity');
-        input.setAttribute('min', '1');
-        input.setAttribute('max', '100');
-        input.setAttribute('value', productQuantity);
+    input = document.createElement('input');
+    div_quantity.appendChild(input);
+    input.setAttribute('type', 'number');
+    input.setAttribute('class', 'itemQuantity');
+    input.setAttribute('name', 'itemQuantity');
+    input.setAttribute('min', '1');
+    input.setAttribute('max', '100');
+    input.setAttribute('value', productQuantity);
 
     //delete
 
-        div_delete = document.createElement('div');
-        div_setting.appendChild(div_delete);
-        div_delete.setAttribute('class', 'cart__item__content__settings__delete');
+    div_delete = document.createElement('div');
+    div_setting.appendChild(div_delete);
+    div_delete.setAttribute('class', 'cart__item__content__settings__delete');
 
-        p_delete = document.createElement('p');
-        div_delete.appendChild(p_delete);
-        p_delete.setAttribute('class', 'deleteItem');
-        p_delete.setAttribute('onClick', "supprimeProduct('"+ productLocalStorage.productId +"','" + productColor +"')");
-        p_delete.innerHTML = "Supprimer";
+    p_delete = document.createElement('p');
+    div_delete.appendChild(p_delete);
+    p_delete.setAttribute('class', 'deleteItem');
+    p_delete.setAttribute('onClick', "supprimeProduct('"+ productLocalStorage.productId +"','" + productColor +"')");
+    p_delete.innerHTML = "Supprimer";
 
 
 }
-
+//fonction qui supprime un produit du panier au click du bouton supprimer
 function supprimeProduct(productId, color){
     let LSProduct=JSON.parse(localStorage.getItem('products'));
     let article_toDelete=document.querySelectorAll('.cart__item');
@@ -138,7 +134,6 @@ function supprimeProduct(productId, color){
             LSProduct = LSProduct.filter( LSProduct => LSProduct.productId !== productId || LSProduct.color !== color );
             localStorage.setItem("products", JSON.stringify(LSProduct));
             alert("Ce produit a bien été supprimé du panier");
-            // location.reload();
             for (let i=0; i<article_toDelete.length; i++){
                 article_toDelete[i].remove();
             }
@@ -146,8 +141,7 @@ function supprimeProduct(productId, color){
         }
     }
 }
-
-
+//fonction qui calcul le prix et la quantité total des produits
 function calculTotal(productsLocalStorage, productsBackend){
     let quantiteTotal = 0;
     let prixTotal = 0;
@@ -167,7 +161,7 @@ function calculTotal(productsLocalStorage, productsBackend){
     totalPrice.innerHTML = prixTotal;
     
 }
-
+//fonction qui vérifie si la quantité produit ne dépasse pas le seuil
 function verifInputQuantity(){
     let LSProduct=JSON.parse(localStorage.getItem('products'));
     for (let i=0; i<LSProduct.length; i++){
@@ -179,8 +173,7 @@ function verifInputQuantity(){
         }
     }
 }
-
-
+//fonction qui modifie la quantité depuis le panier
 function modifyQtt(productsLocalStorage) {
     let qttModif = document.querySelectorAll(".itemQuantity");
     
@@ -190,8 +183,9 @@ function modifyQtt(productsLocalStorage) {
             
             let qttModifValue = qttModif[i].value;
             let productIdModif = productsLocalStorage[i].productId;
+            let colorModif = productsLocalStorage[i].color;
             
-            const resultFind = productsLocalStorage.find((el) => el.productId == productIdModif);
+            const resultFind = productsLocalStorage.find((el) => el.productId == productIdModif && el.color == colorModif);
             
             resultFind.quantity = qttModifValue;
             productsLocalStorage[i].quantity = resultFind.quantity;
@@ -204,10 +198,7 @@ function modifyQtt(productsLocalStorage) {
     }
 }
 
-
-const orderButton = document.querySelector("#order");
-orderButton.addEventListener("click", (e) => sendForm(e));
-
+//fonction principale permettant d'envoyer les valeurs vérifiés de formulaire
 function sendForm(e) {
     e.preventDefault()
     let productQuantity = document.querySelectorAll(".itemQuantity");
@@ -223,22 +214,28 @@ function sendForm(e) {
     if (cityVerif()) return;
     if (emailVerif()) return;
 
-    const contact = makeFormContact()
-    fetch("http://localhost:3000/api/products/order", {
-            method: "POST",
-            body: JSON.stringify(contact),
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            const orderId = data.orderId;
-            window.location.href = "./confirmation.html" + "?orderId=" + orderId;
-        })
-}
+    // alert('je suis passé');
 
+    const contact = makeFormContact();
+
+    localStorage.setItem("confirmation", JSON.stringify(contact));
+
+
+    fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        body: localStorage.getItem('confirmation'),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        window.location.href = "./confirmation.html?orderId=" + data.orderId;
+    })
+
+}
+//fonction qui récupéère et stock les valeurs du formulaire
 function makeFormContact() {
     const form = document.querySelector(".cart__order__form");
     const firstName = form.elements.firstName.value;
@@ -256,23 +253,26 @@ function makeFormContact() {
         },
         products: idsProducts(),
     }
+
     return contact;
 }
-
+//fonction qui vérifie si les valeurs des inputs ne sont pas vides
 function formVerif() {
     const form = document.querySelector(".cart__order__form");
     const inputs = form.querySelectorAll("input");
-    inputs.forEach((input) => {
-        if (input.value === "") {
-            input.closest("div.cart__order__form__question").getElementsByTagName("p")[0].innerHTML = "Merci de remplir tous les champs";
+    // fonction appelée forcément, donc faire simple boucle forEach
+    for(let i=0; i<inputs.length; i++){
+        console.log("test1");
+        if(inputs[i].value == null || inputs[i].value == ""){
+            inputs[i].closest("div.cart__order__form__question").getElementsByTagName("p")[0].innerHTML = "Merci de remplir tous les champs";
             // alert("Merci de remplir tous les champs")
-
+            console.log("test2");
             return true;
         }
-        return false;
-    })
+    }
+    return false;
 }
-
+//fonctions qui vérifie les différents (indiqué dans le nom de la fonction)
 function firstNameVerif() {
     const firstName = document.querySelector("#firstName").value;
     const regexFirstName = /^([^0-9]*)$/;
@@ -309,29 +309,31 @@ function cityVerif() {
 }
 
 function emailVerif() {
-    const email = document.querySelector("#email").value;
-    const regexMail = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/;
+    const email = document.querySelector("#email").value
+    const regexMail = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/
     if (regexMail.test(email) === false) {
         document.querySelector("#emailErrorMsg").innerHTML = "Merci d'entrer un email valide";
-        return true;
+        return true
     }
-    return false;
+    return false
 }
-
+//fonction qui récupère les id des produits
 function idsProducts() {
-    const quantityProducts = localStorage.length
-    const ids = []
-    for (let i = 0; i < quantityProducts; i++) {
-        const key = localStorage.key(i)
-        const id = key.split("-")[0]
+    const LSProduct=JSON.parse(localStorage.getItem('products'));
+    let ids = []
+    for (let i = 0; i < LSProduct.length; i++) {
+        let id = LSProduct[i].productId;
         ids.push(id)
     }
     return ids
 }
-
+//fonction main de la page
 function main()
 {
     getProducts(URL_BACKEND);
+
+    const orderButton = document.querySelector("#order");
+    orderButton.addEventListener("click", (e) => sendForm(e));
 }
 
 main();

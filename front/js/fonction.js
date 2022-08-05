@@ -3,19 +3,22 @@ const errorMsg = "Une erreur est survenue, veuillez réessayer plus tard";
 const MSG_ERROR_API="Erreur de la requête API";
 let Products=[];
 
-
+//fonction pour alerter l'utilisateur qu'un problème est survenu
 function AlertUser(message)
 {
     alert(message);
 }
 
+//fonction pour alerter le développeur qu'un problème est survenu
 function alertDev(fonction, message)
 {
     console.log(fonction + ' : ' + message);
 }
 
-async function getProducts(url) {
-    await fetch(url, {
+//fonction de base récupérant les données de l'API, 
+//mise en fonction général pour éviter une surcharge du code
+async function getProducts(URL_BACKEND) {
+    await fetch(URL_BACKEND, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -30,6 +33,6 @@ async function getProducts(url) {
     })
     .then ((products) => {
         Products=products;
-        showProducts ();
+        showProducts();
     });
 }

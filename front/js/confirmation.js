@@ -1,14 +1,31 @@
-function confirmationOrderId() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString)
-    const orderId = urlParams.get("orderId")
-    return orderId
-}
+function getOrderId(){
+    let str = window.location.href;
+    let url = new URL(str);
+    let orderId = url.searchParams.get("orderId");
+    if(!orderId || !url || !str){
+        alert(errorMsg);
+    }
 
-function setOrderId(orderId) {
-    const orderIdElement = document.getElementById("orderId")
-    orderIdElement.textContent = orderId
+    let orderIdElement = document.getElementById("orderId");
+    orderIdElement.innerHTML = orderId;
 }
+getOrderId();
 
-const orderId = confirmationOrderId()
-setOrderId(orderId)
+//fonction qui récupère les information envoyées depuis la page panier
+// function getForm() {
+//     fetch("http://localhost:3000/api/products/order", {
+//         method: "POST",
+//         body: localStorage.getItem('confirmation'),
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json"
+//         }
+//     })
+//     .then((res) => res.json())
+//     .then((data) => {
+//         const orderId = data.orderId;
+//         let orderIdElement = document.getElementById("orderId");
+//         orderIdElement.innerHTML = orderId;
+//     })
+// }
+// getForm();
